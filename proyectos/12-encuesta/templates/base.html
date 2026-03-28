@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuestas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #4CAF50;
+            --color-primary-dark: #43a047;
+            --color-secondary: #2196F3;
+            --color-danger: #f44336;
+            --color-text: #333;
+            --color-text-light: #666;
+            --color-light: #f8f9fa;
+            --color-border: #e0e0e0;
+            --color-card: #ffffff;
+            --radius: 16px;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* Cabecera */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            color: #222;
+            font-size: 2.2rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .subtitle {
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Tarjetas principales */
+        .card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+        }
+
+        /* Preguntas */
+        .question {
+            margin-bottom: 2rem;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+        }
+
+        .question-text {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        /* Opciones de respuesta */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 1.1rem 1.4rem;
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option:hover {
+            border-color: var(--color-primary);
+            background: #f8fff8;
+        }
+
+        .option.selected {
+            border-color: var(--color-primary);
+            background: #f0f9f0;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            accent-color: var(--color-primary);
+            transform: scale(1.2);
+        }
+
+        /* Barra de progreso */
+        .progress-container {
+            margin: 2rem 0;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--color-primary), #66bb6a);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Botones */
+        .btn {
+            background: var(--color-primary);
+            color: white;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+        }
+
+        .btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Resultados */
+        .result-option {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 1.2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .result-bar {
+            height: 10px;
+            background: var(--color-primary);
+            border-radius: 5px;
+            margin-top: 6px;
+        }
+
+        /* Mensajes y notas */
+        .nota {
+            background: white;
+            padding: 1.2rem 1.5rem;
+            border-radius: var(--radius);
+            border-left: 6px solid var(--color-primary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 1.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .card {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.9rem;
+            }
+            
+            .question-text {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<ul>
+
+{% for opcion, cantidad in votos.items() %}
+
+<li>{{ opcion }}: {{ cantidad }}</li>
+
+{% endfor %}
+
+</ul>
+
+{% endblock %}
