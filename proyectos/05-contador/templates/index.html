@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contador de Visitas</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 3rem 4rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    h1 {
+      font-size: 4.5rem;
+      margin: 0.2em 0;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+    .texto {
+      font-size: 1.5rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+    .numero {
+      font-size: 6rem;
+      font-weight: 900;
+      color: #ffeb3b;
+      text-shadow: 0 0 30px rgba(255,235,59,0.7);
+    }
+    .recarga {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="texto">Has visitado esta página</div>
+    <div class="numero">{{ visitas }}</div>
+    <div class="texto">veces</div>
+    
+    <div class="recarga">
+      Recarga la página (F5 o ↻) para sumar una visita más
+    </div>
+  </div>
+
+</body>
+</html>

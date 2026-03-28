@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Unidades</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+        }
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .resultado {
+            margin-top: 25px;
+            padding: 15px;
+            background: #e8f4f8;
+            border-radius: 8px;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        .error {
+            color: #c0392b;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Conversor de Unidades</h1>
+
+        <form method="POST">
+            <label for="valor">Valor a convertir:</label>
+            <input 
+                type="number" 
+                id="valor" 
+                name="valor" 
+                step="any" 
+                value="{{ valor }}"
+                placeholder="Ej: 100"
+                required
+            >
+
+            <label for="conversion">Tipo de conversión:</label>
+            <select name="conversion" id="conversion">
+                <option value="km_millas"   {% if conversion_seleccionada == 'km_millas'   %}selected{% endif %}>Kilómetros → Millas</option>
+                <option value="millas_km"   {% if conversion_seleccionada == 'millas_km'   %}selected{% endif %}>Millas → Kilómetros</option>
+                <option value="c_f"         {% if conversion_seleccionada == 'c_f'         %}selected{% endif %}>Celsius → Fahrenheit</option>
+                <option value="f_c"         {% if conversion_seleccionada == 'f_c'         %}selected{% endif %}>Fahrenheit → Celsius</option>
+            </select>
+
+            <button type="submit">Convertir</button>
+        </form>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if resultado %}
+            <div class="resultado">
+                Resultado: <strong>{{ resultado }}</strong>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

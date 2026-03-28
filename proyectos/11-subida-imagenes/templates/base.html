@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir imagenes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #4CAF50;
+            --color-danger: #f44336;
+            --color-text: #333;
+            --color-light: #f8f9fa;
+            --color-border: #ddd;
+            --radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background: var(--color-light);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            color: #222;
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
+        }
+
+        /* ====================== ESTILOS PARA IMÁGENES ====================== */
+
+        .imagen-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .imagen-subida {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            background: white;
+            padding: 8px;
+        }
+
+        .imagen-subida:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .imagen-subida img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .imagen-label {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Si quieres mostrar varias imágenes en galería */
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .galeria .imagen-subida {
+            margin: 0;
+        }
+
+        /* ====================== ESTILOS GENERALES ====================== */
+
+        input[type="file"] {
+            margin: 1rem 0;
+            padding: 0.5rem 0;
+        }
+
+        button {
+            background: var(--color-primary);
+            color: white;
+            padding: 0.75rem 1.8rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #43a047;
+            transform: translateY(-2px);
+        }
+
+        .nota {
+            background: white;
+            padding: 1.4rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.2rem;
+            border-left: 5px solid var(--color-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html> 

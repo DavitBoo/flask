@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora básica</title>
+</head>
+<body>
+
+<h2>Calculadora</h2>
+
+<form action="" method="post">
+    <input type="number" name="num1" placeholder="Número 1" required>
+
+    <input type="number" name="num2" placeholder="Número 2" required>
+
+    <br><br>
+
+    <button type="submit" name="operacion" value="sumar">+</button>
+    <button type="submit" name="operacion" value="restar">-</button>
+    <button type="submit" name="operacion" value="multiplicar">*</button>
+    <button type="submit" name="operacion" value="dividir">/</button>
+</form>
+
+<p>Resultado: {{ resultado }}</p>
+
+</body>
+</html>

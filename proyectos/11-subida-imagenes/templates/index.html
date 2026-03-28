@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="imagen" accept="image/*">
+    <button type="submit">Subir imagen</button>
+</form>
+
+<!-- Mensajes de error -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="nota error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<!-- Mostrar la imagen subida -->
+{% if nombre_imagen %}
+    <div class="imagen-container">
+        <div class="imagen-subida">
+            <h3>Imagen subida correctamente:</h3>
+            <img src="{{ url_for('static', filename='upload/' + nombre_imagen) }}" 
+                 alt="Imagen subida" style="max-width: 600px;">
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO - list</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-dark);
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        form.add-form {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+            background: var(--card);
+            padding: 1rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.15);
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        button {
+            padding: 0.9rem 1.8rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.05rem;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .lista-tareas {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.2rem;
+            background: #f8fafc;
+            margin-bottom: 0.8rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+            border-left: 4px solid var(--primary);
+        }
+
+        li:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        li form {
+            margin: 0;
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+            border-radius: 8px;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger-hover);
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--text-light);
+            padding: 3rem 1rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>✨ Mis Tareas</h1>
+
+        <form method="POST" class="add-form">
+            <input type="text" name="tarea" placeholder="¿Qué tienes que hacer hoy?" required autofocus>
+            <button type="submit">
+                <i class="fa-solid fa-plus"></i> Añadir
+            </button>
+        </form>
+
+        <div class="lista-tareas">
+            {% if tareas %}
+            <ul>
+                {% for tarea in tareas %}
+                <li>
+                    <span>{{ tarea }}</span>
+                    <form  action="{{ url_for('borrarTarea', id=loop.index0) }}">          
+                        <button type="submit" class="delete-btn">
+                            <i class="fa-solid fa-trash-can"></i> Borrar
+                        </button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="empty">
+                <p>Aún no tienes tareas... ¡empieza a organizar tu día! 🚀</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{post.titulo}} - Mi Blog{% endblock %}
+
+{% block content %}
+
+<h1>{{ post.titulo }}</h1>
+
+<div class="post-content">
+    <p class="meta">Publicado el {{ post.fecha or "fecha desconocida" }}</p>
+    <div class="body">
+        {{ post.contenido | safe }}
+    </div>
+    <!-- Flask busca una función de vista cuyo nombre sea exactamente index -->
+    <a href="{{ url_for('index') }}" class="btn back">← Volver al inicio</a>
+</div>
+{% endblock %}
