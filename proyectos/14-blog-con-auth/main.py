@@ -1,4 +1,4 @@
-from models import app, db, Usuario, Post, Comment # importo todo del archivo models.py
+from models import app, db, Usuario, Post # importp tpdp del archivo models.py
 from flask import request, redirect, url_for, render_template, flash
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 

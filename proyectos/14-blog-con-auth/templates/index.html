@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Blog{% endblock %}
+
+{% block extra_css %}
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.post-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+}
+
+.post-card h2 {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.post-card p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    white-space: pre-wrap;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.post-author {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.post-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.post-actions a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.post-actions a:hover {
+    color: var(--primary);
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: var(--error);
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.btn-delete:hover {
+    opacity: 1;
+}
+{% endblock %}
+
+{% block content %}
+    <div class="welcome-header">
+        {% if current_user.is_authenticated %}
+        <h1>¡Hola de nuevo, {{ current_user.username }}! 👋</h1>
+        <p>Aquí tienes las últimas novedades del blog.</p>
+        {% else %}
+        <h1>Bienvenido a mi Blog (Con Seguridad 🔐)</h1>
+        <p>Regístrate para poder publicar tus propios artículos.</p>
+        {% endif %}
+    </div>
+
+    <div class="post-list">
+        {% if posts %}
+            {% for post in posts %}
+            <div class="post-card">
+                <h2>{{ post.titulo }}</h2>
+                <p>{{ post.contenido }}</p>
+                
+                <div class="post-meta">
+                    <span class="post-author">Por: {{ post.autor.username if post.autor else 'Anónimo' }}</span>
+                    
+                    {% if current_user.is_authenticated and current_user.id == post.user_id %}
+                    <div class="post-actions">
+                        <a href="{{ url_for('editar_post', id=post.id) }}">Editar</a>
+                        <form action="{{ url_for('eliminar_post', id=post.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-delete" onclick="return confirm('¿Estás seguro?')">Eliminar</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: var(--text-muted); margin-top: 4rem;">No hay publicaciones todavía. ¡Sé el primero en escribir!</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -13,8 +13,6 @@ class Usuario(db.Model, UserMixin):     # Herencia múltiple de UserMixing sobre
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    
-    comentarios = db.relationship("Comentario", backref="usuario", lazy=True)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -29,17 +27,4 @@ class Post(db.Model):
     contenido = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
     
-    # estas referencias permiten hacer post.comentarios
     autor = db.relationship('Usuario', backref=db.backref('posts', lazy=True))
-    comentarios = db.relationship("Comentario", backref="post", lazy=True)
-
-class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    contenido = db.Column(db.Text)
-    
-    post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
-    usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
-    
-    
-    
-    
