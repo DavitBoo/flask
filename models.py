@@ -9,7 +9,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
 
 db = SQLAlchemy(app)
 
-class Usuario(db.Model, UserMixin):     # Herencia múltiple de UserMixing sobre nuestra clase Usuario. Ganamos así 4 métodos nuevos entre ellos is_acitve
+class Usuario(db.Model, UserMixin):     # Herencia múltiple de UserMixin sobre nuestra clase Usuario. Ganamos así 4 métodos nuevos entre ellos is_active
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
@@ -31,11 +31,13 @@ class Post(db.Model):
     
     # estas referencias permiten hacer post.comentarios
     autor = db.relationship('Usuario', backref=db.backref('posts', lazy=True))
-    comentarios = db.relationship("Comentario", backref="post", lazy=True)
+    comentarios = db.relationship("Comentario", backref="post", lazy=True, order_by="Comentario.id.desc()")
+    # tiendo los comentarios aquí definidos, no tiene mucho sentido queriear Comentario.query.order_by(Comentario.id.desc()).all()
 
-class Comment(db.Model):
+class Comentario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     contenido = db.Column(db.Text)
+    fecha = db.Column(db.DateTime)
     
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))

@@ -94,20 +94,21 @@
         {% if posts %}
             {% for post in posts %}
             <div class="post-card">
-                <h2>{{ post.titulo }}</h2>
-                <p>{{ post.contenido }}</p>
+                <h2><a href="{{ url_for('ver_post', id=post.id) }}" style="text-decoration: none; color: inherit;">{{ post.titulo }}</a></h2>
+                <p>{{ post.contenido[:250] }}{% if post.contenido|length > 250 %}...{% endif %}</p>
                 
                 <div class="post-meta">
                     <span class="post-author">Por: {{ post.autor.username if post.autor else 'Anónimo' }}</span>
                     
-                    {% if current_user.is_authenticated and current_user.id == post.user_id %}
                     <div class="post-actions">
+                        <a href="{{ url_for('ver_post', id=post.id) }}" style="color: var(--primary); font-weight: 600;">Ver más</a>
+                        {% if current_user.is_authenticated and current_user.id == post.user_id %}
                         <a href="{{ url_for('editar_post', id=post.id) }}">Editar</a>
                         <form action="{{ url_for('eliminar_post', id=post.id) }}" method="POST" style="display:inline;">
                             <button type="submit" class="btn-delete" onclick="return confirm('¿Estás seguro?')">Eliminar</button>
                         </form>
+                        {% endif %}
                     </div>
-                    {% endif %}
                 </div>
             </div>
             {% endfor %}

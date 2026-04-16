@@ -1,4 +1,4 @@
-from models import app, db, Usuario, Post, Comment # importo todo del archivo models.py
+from models import app, db, Usuario, Post, Comentario # importo todo del archivo models.py
 from flask import request, redirect, url_for, render_template, flash
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 
@@ -15,8 +15,6 @@ app.secret_key = "mi_clave_secreta_123"
 # Crear las tablas en la base de datos (si no existen)
 with app.app_context():
     db.create_all()
-
-
 
 @app.route('/')
 def home():
@@ -71,6 +69,7 @@ def logout():
     logout_user()
     flash("¡Hasta la próxima! Has cerrado sesión correctamente.", "success")
     return redirect(url_for("home")) 
+
 # --- CRUD DE POSTS ---
 
 @app.route('/post/nuevo', methods=['GET', 'POST'])
@@ -80,6 +79,10 @@ def nuevo_post():
     if request.method == 'POST':
         titulo = request.form.get('titulo')
         contenido = request.form.get('contenido')
+
+        if not titulo or not contenido or contenido.strip() == "":
+            flash("El título y el contenido no pueden estar vacíos", "error")
+            return redirect(url_for("nuevo_post"))
         
         nuevo = Post(titulo=titulo, contenido=contenido, user_id=current_user.id)
         db.session.add(nuevo)
@@ -89,6 +92,11 @@ def nuevo_post():
         return redirect(url_for('home'))
         
     return render_template("nuevo_post.html")
+
+@app.route('/post/<int:id>')
+def ver_post(id):
+    post = Post.query.get_or_404(id)
+    return render_template("ver_post.html", post=post)
 
 @app.route('/post/editar/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -122,6 +130,38 @@ def eliminar_post(id):
     db.session.commit()
     flash("Post eliminado correctamente.", "success")
     return redirect(url_for('home'))
+
+@app.route('/post/<int:id>/comentario', methods=['POST'])
+@login_required
+def publicar_comentario(id):
+    contenido = request.form.get("contenido")
+    if contenido and contenido.strip() != "":
+        comentario = Comentario(
+            contenido=contenido,
+            post_id=id,
+            usuario_id=current_user.id
+        )
+        db.session.add(comentario)
+        db.session.commit()
+        flash("Comentario añadido", "success")
+    else:
+        flash("El comentario no puede estar vacío", "error")
+    return redirect(url_for("ver_post", id=id))
+
+
+@app.route('/post/<int:id>/comentario/<int:commentId>', methods=['POST'])
+@login_required
+def borrar_comentario(id, commentId):
+    #get usuario_id from comment 
+    comentario = Comentario.query.get_or_404(commentId)
+    if comentario.usuario_id == current_user.id or comentario.post.user_id == current_user.id:
+        db.session.delete(comentario)
+        db.session.commit()
+        flash("Comentario eliminado correctamente", "success")
+    else:
+        flash("No tienes permiso para eliminar este comentario", "error")
+    return redirect(url_for("ver_post", id=id))
+    
+
 if __name__ == '__main__':
     app.run(debug=True)
-    
