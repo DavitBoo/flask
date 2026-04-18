@@ -4,118 +4,118 @@
 
 {% block extra_css %}
 .admin-header {
-    margin-bottom: 3rem;
-    text-align: center;
+margin-bottom: 3rem;
+text-align: center;
 }
 
 .admin-header h1 {
-    font-size: 2.5rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
+font-size: 2.5rem;
+background: linear-gradient(135deg, var(--primary), var(--secondary));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+margin-bottom: 0.5rem;
 }
 
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 1.5rem;
+margin-bottom: 3rem;
 }
 
 .stat-card {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    text-align: center;
-    transition: transform 0.3s ease;
+background: var(--card-bg);
+padding: 1.5rem;
+border-radius: 16px;
+border: 1px solid var(--border);
+text-align: center;
+transition: transform 0.3s ease;
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary);
+transform: translateY(-5px);
+border-color: var(--primary);
 }
 
 .stat-value {
-    display: block;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary);
+display: block;
+font-size: 2rem;
+font-weight: 700;
+color: var(--primary);
 }
 
 .stat-label {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+color: var(--text-muted);
+font-size: 0.875rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
 }
 
 .admin-section {
-    background: var(--card-bg);
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-bottom: 2rem;
+background: var(--card-bg);
+border-radius: 20px;
+border: 1px solid var(--border);
+overflow: hidden;
+margin-bottom: 2rem;
 }
 
 .section-header {
-    padding: 1.5rem 2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+padding: 1.5rem 2rem;
+background: rgba(255, 255, 255, 0.03);
+border-bottom: 1px solid var(--border);
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .section-header h2 {
-    font-size: 1.25rem;
-    color: var(--text-main);
+font-size: 1.25rem;
+color: var(--text-main);
 }
 
 .user-table-container {
-    padding: 1rem 2rem;
-    overflow-x: auto;
+padding: 1rem 2rem;
+overflow-x: auto;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
+width: 100%;
+border-collapse: collapse;
+margin: 1rem 0;
 }
 
 th {
-    text-align: left;
-    color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: 1rem 0.5rem;
-    border-bottom: 1px solid var(--border);
+text-align: left;
+color: var(--text-muted);
+font-weight: 600;
+font-size: 0.875rem;
+padding: 1rem 0.5rem;
+border-bottom: 1px solid var(--border);
 }
 
 td {
-    padding: 1rem 0.5rem;
-    border-bottom: 1px solid rgba(71, 85, 105, 0.5);
-    font-size: 0.9375rem;
+padding: 1rem 0.5rem;
+border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+font-size: 0.9375rem;
 }
 
 .badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
+padding: 0.25rem 0.75rem;
+border-radius: 9999px;
+font-size: 0.75rem;
+font-weight: 600;
 }
 
 .badge-admin {
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--primary);
-    border: 1px solid rgba(99, 102, 241, 0.2);
+background: rgba(99, 102, 241, 0.1);
+color: var(--primary);
+border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 .badge-user {
-    background: rgba(148, 163, 184, 0.1);
-    color: var(--text-muted);
-    border: 1px solid rgba(148, 163, 184, 0.2);
+background: rgba(148, 163, 184, 0.1);
+color: var(--text-muted);
+border: 1px solid rgba(148, 163, 184, 0.2);
 }
 {% endblock %}
 
@@ -152,6 +152,7 @@ td {
                     <th>Nombre de usuario</th>
                     <th>Rol</th>
                     <th>Publicaciones</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -165,6 +166,14 @@ td {
                         </span>
                     </td>
                     <td style="color: var(--text-muted);">{{ usuario.posts|length if usuario.posts else 0 }}</td>
+                    <td>
+                        <form action="{{ url_for('borrar_usuario', id=usuario.id) }}" method="POST"
+                            style="display:inline;">
+                            <button type="submit" class="badge"
+                                style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.2); cursor: pointer;"
+                                onclick="return confirm('¿Eliminar usuario permanentemente?')">Eliminar</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -196,9 +205,13 @@ td {
                     <td style="color: var(--text-muted);">{{ post.comentarios|length if post.comentarios else 0 }}</td>
                     <td>
                         <div style="display: flex; gap: 0.5rem;">
-                            <a href="{{ url_for('ver_post', id=post.id) }}" class="badge badge-admin" style="text-decoration: none;">Ver</a>
-                            <form action="{{ url_for('eliminar_post', id=post.id) }}" method="POST" style="display:inline;">
-                                <button type="submit" class="badge" style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.2); cursor: pointer;" onclick="return confirm('¿Eliminar post permanentemente?')">Eliminar</button>
+                            <a href="{{ url_for('ver_post', id=post.id) }}" class="badge badge-admin"
+                                style="text-decoration: none;">Ver</a>
+                            <form action="{{ url_for('eliminar_post', id=post.id) }}" method="POST"
+                                style="display:inline;">
+                                <button type="submit" class="badge"
+                                    style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.2); cursor: pointer;"
+                                    onclick="return confirm('¿Eliminar post permanentemente?')">Eliminar</button>
                             </form>
                         </div>
                     </td>

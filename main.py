@@ -161,6 +161,7 @@ def publicar_comentario(id):
 
 @app.route('/post/<int:id>/comentario/<int:commentId>', methods=['POST'])
 @login_required
+@admin_required
 def borrar_comentario(id, commentId):
     #get usuario_id from comment 
     comentario = Comentario.query.get_or_404(commentId)
@@ -182,6 +183,20 @@ def admin():
     total_posts = Post.query.count()
     total_comentarios = Comentario.query.count()
     return render_template("admin.html", usuarios=usuarios, posts=posts, total_posts=total_posts, total_comentarios=total_comentarios)
+
+@app.route("/admin/borrar_usuario/<int:id>", methods=['POST'])
+@login_required
+@admin_required
+def borrar_usuario(id):
+    if id == current_user.id:
+        flash("No puedes eliminarte a ti mismo.", "error")
+        return redirect(url_for("admin"))
+    
+    usuario = Usuario.query.get_or_404(id)
+    db.session.delete(usuario)
+    db.session.commit()
+    flash(f"Usuario {usuario.username} eliminado correctamente.", "success")
+    return redirect(url_for("admin"))
 
 if __name__ == '__main__':
     app.run(debug=True)
