@@ -1,0 +1,47 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Gestión de Usuarios{% endblock %}
+{% block admin_subtitle %}Administra los roles y accesos de los usuarios{% endblock %}
+
+{% block admin_content %}
+<div class="admin-section">
+    <div class="section-header">
+        <h2>Usuarios Registrados</h2>
+    </div>
+    <div class="user-table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de usuario</th>
+                    <th>Rol</th>
+                    <th>Publicaciones</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>#{{ usuario.id }}</td>
+                    <td style="font-weight: 500;">{{ usuario.username }}</td>
+                    <td>
+                        <span class="badge {{ 'badge-admin' if usuario.is_admin else 'badge-user' }}">
+                            {{ usuario.rol.upper() }}
+                        </span>
+                    </td>
+                    <td style="color: var(--text-muted);">{{ usuario.posts|length if usuario.posts else 0 }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.borrar_usuario', id=usuario.id) }}" method="POST"
+                            style="display:inline;">
+                            <button type="submit" class="badge"
+                                style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.2); cursor: pointer;"
+                                onclick="return confirm('¿Eliminar usuario permanentemente?')">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

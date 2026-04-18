@@ -1,0 +1,48 @@
+<!-- se busca con la URL completa la plantilla, por que % extends..., busca siempre desde la raíz -->
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Gestión de Publicaciones{% endblock %}
+{% block admin_subtitle %}Supervisa y modera el contenido del blog{% endblock %}
+
+{% block admin_content %}
+<div class="admin-section">
+    <div class="section-header">
+        <h2>Lista de Publicaciones</h2>
+    </div>
+    <div class="user-table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Comentarios</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                <tr>
+                    <td>#{{ post.id }}</td>
+                    <td style="font-weight: 500;">{{ post.titulo }}</td>
+                    <td style="color: var(--primary);">{{ post.autor.username if post.autor else 'Anónimo' }}</td>
+                    <td style="color: var(--text-muted);">{{ post.comentarios|length if post.comentarios else 0 }}</td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="{{ url_for('blog.ver_post', id=post.id) }}" class="badge badge-admin"
+                                style="text-decoration: none;">Ver</a>
+                            <form action="{{ url_for('blog.eliminar_post', id=post.id) }}" method="POST"
+                                style="display:inline;">
+                                <button type="submit" class="badge"
+                                    style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.2); cursor: pointer;"
+                                    onclick="return confirm('¿Eliminar post permanentemente?')">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
