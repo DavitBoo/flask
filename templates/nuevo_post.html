@@ -81,7 +81,7 @@ input:focus, textarea:focus {
         <h1>{{ "Editar Post" if post else "Crear Nuevo Post" }}</h1>
     </div>
 
-    <form method="POST">
+    <form action="{{ url_for('blog.editar_post', id=post.id) if post else url_for('blog.nuevo_post') }}" method="POST">
         <div class="form-group">
             <label for="titulo">Título</label>
             <input type="text" id="titulo" name="titulo" value="{{ post.titulo if post else '' }}" placeholder="Escribe un título llamativo" required>
