@@ -13,7 +13,6 @@ class Usuario(db.Model, UserMixin):     # Herencia múltiple de UserMixin sobre 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    rol= db.Column(db.String(50), nullable=False, default="usuario")
     
     comentarios = db.relationship("Comentario", backref="usuario", lazy=True)
 
@@ -22,11 +21,6 @@ class Usuario(db.Model, UserMixin):     # Herencia múltiple de UserMixin sobre 
 
     def check_password(self, password): # self es el usuario de la instancia que lo llama
         return check_password_hash(self.password, password) # aquí comparo self.password (la hashed de la DB) con la contraseña introducida (pwhash, password)
-    
-    @property
-    def is_admin(self):
-        return self.rol == "admin"
-
 
 
 class Post(db.Model):

@@ -127,11 +127,8 @@
   <nav>
     <a href="{{ url_for('home') }}">Inicio</a>
     {% if current_user.is_authenticated %}
-      {% if current_user.is_admin %}
-      <a href="{{ url_for('admin') }}">Panel Admin</a>
-      <a href="{{ url_for('nuevo_post') }}">Nuevo Post</a>
-      {% endif %}
-      <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
+    <a href="{{ url_for('nuevo_post') }}">Nuevo Post</a>
+    <form action="{{ url_for('logout') }}" method="POST" style="display:inline;">
       <button type="submit"
         style="background:none; border:none; color:var(--text-muted); font-family:inherit; font-size:inherit; cursor:pointer; font-weight:500;">Cerrar
         Sesión</button>

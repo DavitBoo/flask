@@ -1,4 +1,3 @@
-from functools import wraps
 from models import app, db, Usuario, Post, Comentario # importo todo del archivo models.py
 from flask import request, redirect, url_for, render_template, flash
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
@@ -10,15 +9,6 @@ login_manager.login_view = "login" # Redirige si intentan ir a links con @login_
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id))  # si el id es válido, devuelve el usuario
-
-def admin_required(f): # f recibe la función admin (si llamamos al decorador antes de def admin:)
-    @wraps(f)   # necesitamos el decorador wraps (interno de python) para que admin_required sea de __name__ admin_required y no wrapper
-    def wrapper(*args, **kwargs): #args y kwargs son convenciones, se pueden modificar durante el decorador
-        if not current_user.is_authenticated or not current_user.is_admin():
-            flash("No tienes permisos para acceder a esta página.", "error")
-            return redirect(url_for("home"))
-        return f(*args, **kwargs) # esto hace que se ejecute la función original (si llega hasta aquí)
-    return wrapper
 
 app.secret_key = "mi_clave_secreta_123" 
 
@@ -172,12 +162,6 @@ def borrar_comentario(id, commentId):
         flash("No tienes permiso para eliminar este comentario", "error")
     return redirect(url_for("ver_post", id=id))
     
-
-@app.route('/admin')
-@login_required
-@admin_required # llama a admin_required(admin) (sin parentesis en admin), al ir a /admin, se ejecuta el wrapper primero 
-def admin():
-    return "Bienvenido al panel de administración."
 
 if __name__ == '__main__':
     app.run(debug=True)
