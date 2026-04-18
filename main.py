@@ -177,7 +177,11 @@ def borrar_comentario(id, commentId):
 @login_required
 @admin_required # llama a admin_required(admin) (sin parentesis en admin), al ir a /admin, se ejecuta el wrapper primero 
 def admin():
-    return "Bienvenido al panel de administración."
+    usuarios = Usuario.query.all()
+    posts = Post.query.all()
+    total_posts = Post.query.count()
+    total_comentarios = Comentario.query.count()
+    return render_template("admin.html", usuarios=usuarios, posts=posts, total_posts=total_posts, total_comentarios=total_comentarios)
 
 if __name__ == '__main__':
     app.run(debug=True)

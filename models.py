@@ -23,7 +23,6 @@ class Usuario(db.Model, UserMixin):     # Herencia múltiple de UserMixin sobre 
     def check_password(self, password): # self es el usuario de la instancia que lo llama
         return check_password_hash(self.password, password) # aquí comparo self.password (la hashed de la DB) con la contraseña introducida (pwhash, password)
     
-    @property
     def is_admin(self):
         return self.rol == "admin"
 
