@@ -7,6 +7,7 @@ from routes.auth import auth_bp
 from routes.blog import blog_bp
 from routes.admin import admin_bp
 from routes.main import main_bp
+from resources import api_bp
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
@@ -29,6 +30,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(blog_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(main_bp)
+app.register_blueprint(api_bp, url_prefix='/api')
 
 # Crear las tablas en la base de datos (si no existen)
 with app.app_context():
