@@ -1,0 +1,30 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_title %}Dashboard{% endblock %}
+{% block admin_subtitle %}Estadísticas generales de la comunidad{% endblock %}
+
+{% block admin_content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-value">{{ total_usuarios }}</span>
+        <span class="stat-label">Usuarios</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ total_posts }}</span>
+        <span class="stat-label">Publicaciones</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ total_comentarios }}</span>
+        <span class="stat-label">Comentarios</span>
+    </div>
+</div>
+
+<div class="admin-section">
+    <div class="section-header">
+        <h2>Actividad Reciente</h2>
+    </div>
+    <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+        <p>Resumen rápido de la actividad del sitio. Usa el menú superior para gestionar usuarios o publicaciones.</p>
+    </div>
+</div>
+{% endblock %}

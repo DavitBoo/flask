@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel | Mi Blog{% endblock %}
+
+{% block extra_css %}
+/* Estilos extraídos de admin.html para consistencia */
+.admin-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.admin-header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.admin-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    background: var(--card-bg);
+    padding: 0.75rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.admin-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.admin-nav a:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-nav a.active {
+    color: white;
+    background: var(--primary);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+
+.stat-value { display: block; font-size: 2rem; font-weight: 700; color: var(--primary); }
+.stat-label { color: var(--text-muted); font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.admin-section {
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header h2 { font-size: 1.25rem; color: var(--text-main); }
+
+.user-table-container { padding: 1rem 2rem; overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+th { text-align: left; color: var(--text-muted); font-weight: 600; font-size: 0.875rem; padding: 1rem 0.5rem; border-bottom: 1px solid var(--border); }
+td { padding: 1rem 0.5rem; border-bottom: 1px solid rgba(71, 85, 105, 0.5); font-size: 0.9375rem; }
+
+.badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+.badge-admin { background: rgba(99, 102, 241, 0.1); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.2); }
+.badge-user { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.2); }
+
+{% block admin_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h1>{% block admin_title %}Administración{% endblock %}</h1>
+    <p>{% block admin_subtitle %}Gestión global de la plataforma{% endblock %}</p>
+</div>
+
+<nav class="admin-nav">
+    <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if request.endpoint == 'admin.dashboard' }}">Dashboard</a>
+    <a href="{{ url_for('admin.usuarios_list') }}" class="{{ 'active' if request.endpoint == 'admin.usuarios_list' }}">Usuarios</a>
+    <a href="{{ url_for('admin.posts_list') }}" class="{{ 'active' if request.endpoint == 'admin.posts_list' }}">Publicaciones</a>
+</nav>
+
+{% block admin_content %}{% endblock %}
+
+{% endblock %}
