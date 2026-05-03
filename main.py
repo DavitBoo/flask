@@ -1,4 +1,5 @@
-from models import app, db, Usuario
+from flask import Flask
+from models import db, Usuario
 from flask_login import LoginManager
 
 # Import Blueprints
@@ -6,6 +7,13 @@ from routes.auth import auth_bp
 from routes.blog import blog_bp
 from routes.admin import admin_bp
 from routes.main import main_bp
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
+app.secret_key = "mi_clave_secreta_123" 
+
+# Database Initialization
+db.init_app(app)
 
 # Login Manager Initialization
 login_manager = LoginManager()
@@ -15,8 +23,6 @@ login_manager.login_view = "auth.login" # Redirige si intentan ir a links con @l
 @login_manager.user_loader
 def load_user(user_id):
     return Usuario.query.get(int(user_id)) # si el id es válido, devuelve el usuario
-
-app.secret_key = "mi_clave_secreta_123" 
 
 # Register Blueprints
 app.register_blueprint(auth_bp)

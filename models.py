@@ -1,13 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
+db = SQLAlchemy()
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
-
-db = SQLAlchemy(app)
 
 class Usuario(db.Model, UserMixin):     # Herencia múltiple de UserMixin sobre nuestra clase Usuario. Ganamos así 4 métodos nuevos entre ellos is_active
     id = db.Column(db.Integer, primary_key=True)
