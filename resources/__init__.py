@@ -3,6 +3,7 @@ from flask_restful import Api
 from .blog import PostListResource, PostResource
 from .auth import LoginResource, LogoutResource, RegisterResource, ProfileResource
 from .comments import CommentListResource, CommentResource
+from .admin import AdminDashboardResource, AdminUserListResource, AdminUserResource
 
 # Creamos el Blueprint para la API
 api_bp = Blueprint('api', __name__)
@@ -19,3 +20,8 @@ api.add_resource(ProfileResource, '/auth/me')
 # Recursos de Comentarios
 api.add_resource(CommentListResource, '/posts/<int:post_id>/comments')
 api.add_resource(CommentResource, '/comments/<int:comment_id>')
+
+# Recursos de Administración
+api.add_resource(AdminDashboardResource, '/admin/stats')
+api.add_resource(AdminUserListResource, '/admin/users')
+api.add_resource(AdminUserResource, '/admin/users/<int:user_id>')
