@@ -1,40 +1,69 @@
-from flask import Flask
-from models import db, Usuario
-from flask_login import LoginManager
-
-# Import Blueprints
-from routes.auth import auth_bp
-from routes.blog import blog_bp
-from routes.admin import admin_bp
-from routes.main import main_bp
-from resources import api_bp
+from flask import Flask, request
+from flask_restful import Resource, Api
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
-app.secret_key = "mi_clave_secreta_123" 
+api = Api(app)
 
-# Database Initialization
-db.init_app(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///tareas.db"
+db = SQLAlchemy(app)
 
-# Login Manager Initialization
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "auth.login" # Redirige si intentan ir a links con @login_required
-
-@login_manager.user_loader
-def load_user(user_id):
-    return Usuario.query.get(int(user_id)) # si el id es válido, devuelve el usuario
-
-# Register Blueprints
-app.register_blueprint(auth_bp)
-app.register_blueprint(blog_bp)
-app.register_blueprint(admin_bp)
-app.register_blueprint(main_bp)
-app.register_blueprint(api_bp, url_prefix='/api')
-
-# Crear las tablas en la base de datos (si no existen)
+# definir el modelo con dos columnas de la tabla en este caso. Solo una tabla.
+class Tarea(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(100), nullable=False)
+    
+# Esto es para que se creen las tablas automáticamente al iniciar la app
 with app.app_context():
     db.create_all()
 
-if __name__ == '__main__':
+# Resources es un abstract class, de la cual en este caso TareasResource va a heredar.
+# esta clase abstract me permite definir los métodos HTTP get, post, etc. tan fácil como def get(self): ...
+class TareasResource(Resource):
+
+    def get(self):
+        # Obtenemos todas las tareas de la base de datos
+        tareas = Tarea.query.all()
+        return {"tareas": [{"id": t.id, "titulo": t.titulo} for t in tareas]}
+
+    def post(self):
+        data = request.json
+        # Creamos una nueva tarea y la guardamos en la base de datos
+        nueva_tarea = Tarea(titulo=data['titulo'])
+        db.session.add(nueva_tarea)
+        db.session.commit()
+        return {"mensaje": "Tarea creada", "id": nueva_tarea.id}, 201
+
+
+class TareaResource(Resource):
+
+    def get(self, id):
+        # Buscamos la tarea por su id
+        tarea = Tarea.query.get(id)
+        if tarea:
+            return {"id": tarea.id, "titulo": tarea.titulo}
+        return {"mensaje": "Tarea no encontrada"}, 404
+
+    def delete(self, id):
+        tarea = Tarea.query.get(id)
+        if tarea:
+            db.session.delete(tarea)
+            db.session.commit()
+            return {"mensaje": "Eliminada"}
+        return {"mensaje": "Tarea no encontrada"}, 404
+
+    def put(self, id):
+        data = request.json
+        tarea = Tarea.query.get(id)
+        if tarea:
+            tarea.titulo = data.get('titulo', tarea.titulo)
+            db.session.commit()
+            return {"mensaje": "Tarea actualizada"}
+        return {"mensaje": "Tarea no encontrada"}, 404
+
+
+api.add_resource(TareasResource, "/tareas")
+api.add_resource(TareaResource, "/tareas/<int:id>")
+
+if __name__ == "__main__":
     app.run(debug=True)
